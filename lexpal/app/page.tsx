@@ -3,8 +3,10 @@
 import React from 'react';
 import styles from './page.module.css';
 import Button1 from '../UI_components/button';
+import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
+  const router= useRouter();
   return (
     <div className={styles.container}>
       {/* Header */}
@@ -13,9 +15,11 @@ export default function HomePage() {
           <span className={`material-symbols-outlined ${styles.logoIcon}`}>gavel</span>
           <h2 className={styles.logoText}>Lexpal</h2>
         </div>
+        <button onClick={()=>{router.push("/Login")}}>
         <a href="#" className={styles.primaryButton}>
           Get Started
         </a>
+        </button>
       </header>
 
       {/* Hero Section */}
@@ -28,7 +32,7 @@ export default function HomePage() {
           </h2>
           {/* <button className={styles.primaryButtonLarge}>Talk to AI Chatbot</button> */}
           
-         <Button1/>
+         <Button1 onClick={()=>{router.push("/Login")}}/>
 
         </div>
         <div

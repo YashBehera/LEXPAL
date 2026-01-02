@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useRouter } from "next/navigation";
+
 
 type Button1Props = {
   onClick?: () => void;
@@ -8,7 +8,7 @@ type Button1Props = {
 
 
 const Button1 = ({ onClick }: Button1Props) => {
-  const router= useRouter();
+  
   return (
     <StyledWrapper>
       <div className="btn-wrapper">
