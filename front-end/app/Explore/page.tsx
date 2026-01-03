@@ -19,12 +19,8 @@ const ExplorePage: React.FC = () => {
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
-
-
-
   // 🔹 Fetch lawyers
   const fetchLawyers = useCallback(async () => {
-    
     if (!hasMore || loading) return;
 
     setLoading(true);
@@ -37,32 +33,43 @@ const ExplorePage: React.FC = () => {
       params.append("cursor", cursor);
     }
 
-    const res = await fetch(`${server_url}/api/explore/fetch/all-lawyers?${params.toString()}`);
-    const data: {
-      lawyers: LawyerCardProps[];
-      nextCursor: string | null;
-      hasMore: boolean;
-    } = await res.json();
+    try {
+      const res = await fetch(`${server_url}/api/explore/fetch/all-lawyers?${params.toString()}`);
+      const data: {
+        lawyers: LawyerCardProps[];
+        nextCursor: string | null;
+        hasMore: boolean;
+      } = await res.json();
 
-    setLawyers(prev => [...prev, ...data.lawyers]);
-    setCursor(data.nextCursor);
-    setHasMore(data.hasMore);
-    setLoading(false);
-  }, [cursor, hasMore, loading]);
+      // Use functional update to avoid stale state issues
+      setLawyers(prev => {
+        // Check for duplicates before adding new lawyers
+        const existingIds = new Set(prev.map(lawyer => lawyer.id));
+        const newLawyers = data.lawyers.filter(lawyer => !existingIds.has(lawyer.id));
+        return [...prev, ...newLawyers];
+      });
+      
+      setCursor(data.nextCursor);
+      setHasMore(data.hasMore);
+    } catch (error) {
+      console.error("Error fetching lawyers:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [cursor, hasMore]); // Removed 'loading' from dependencies
 
-
-
-
-  // 🔹 Initial + paginated fetch
+  // 🔹 Initial fetch only (not on fetchLawyers changes)
   useEffect(() => {
-    fetchLawyers();
-  }, [fetchLawyers]);
-
-
-
+    if (lawyers.length === 0) {
+      fetchLawyers();
+    }
+  }, []);
 
   // 🔹 Intersection Observer for infinite scroll
   useEffect(() => {
+    const currentLoader = loaderRef.current;
+    if (!currentLoader) return;
+
     const observer = new IntersectionObserver(
       entries => {
         if (entries[0].isIntersecting && hasMore && !loading) {
@@ -72,15 +79,12 @@ const ExplorePage: React.FC = () => {
       { threshold: 1 }
     );
 
-    if (loaderRef.current) observer.observe(loaderRef.current);
+    observer.observe(currentLoader);
 
     return () => {
-      if (loaderRef.current) observer.unobserve(loaderRef.current);
+      observer.unobserve(currentLoader);
     };
   }, [fetchLawyers, hasMore, loading]);
-
-
-
 
   return (
     <div className="bg-background-light dark:bg-background-dark min-h-screen w-full relative overflow-x-hidden">
@@ -90,7 +94,9 @@ const ExplorePage: React.FC = () => {
         {/* Lawyer Cards */}
         <div className="grid grid-cols-1 gap-4 p-4">
           {lawyers.map((l) => (
-            <LawyerCard first_name={l.first_name}
+            <LawyerCard 
+              key={l.id} // Make sure to add a unique key
+              first_name={l.first_name}
               id={l.id}
               last_name={l.last_name}
               experience={l.experience}
@@ -100,13 +106,17 @@ const ExplorePage: React.FC = () => {
               specialities={l.specialities}
               court_eligibility={l.court_eligibility}
               profile_picture={l.profile_picture}
-              router={router} />
+              router={router} 
+            />
           ))}
         </div>
 
         {/* Loader trigger */}
         <div ref={loaderRef} className={styles.loader}>
           {loading && <p className="text-center text-sm text-gray-500">Loading more lawyers...</p>}
+          {!hasMore && lawyers.length > 0 && (
+            <p className="text-center text-sm text-gray-500">No more lawyers to load</p>
+          )}
         </div>
       </div>
 

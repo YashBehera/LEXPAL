@@ -17,17 +17,7 @@
   align-items: center;
   padding: 16px;
 }
-
-.bookmarked {
-  color: #000; /* black */
-}
-
-
-
-.bookmarked span {
-  font-variation-settings: "FILL" 1;
-}
-
+/* Update your CSS styles */
 .iconButton {
   height: 40px;
   width: 40px;
@@ -35,6 +25,19 @@
   background: none;
   border-radius: 50%;
   cursor: pointer;
+  color: #040000; /* Default outline color */
+}
+
+.iconButton span {
+  font-variation-settings: "FILL" 0; /* Default: not filled */
+}
+
+.iconButton.bookmarked {
+  color: #000; /* Black when bookmarked */
+}
+
+.iconButton.bookmarked span {
+  font-variation-settings: "FILL" 1; /* Filled when bookmarked */
 }
 
 .iconButton:hover {

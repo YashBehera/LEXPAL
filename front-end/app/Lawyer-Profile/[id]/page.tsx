@@ -131,10 +131,12 @@ const LawyerProfilePage: React.FC = () => {
 
           <h1 className={styles.title}>Lawyer Profile</h1>
 
-          <button className={`${styles.iconButton} ${isSaved ? styles.bookmarked : ""}`}
-  onClick={toggleBookmark} >
-            <span className="material-symbols-outlined">{isSaved ? "bookmark" : "bookmark_border"}</span>
-          </button>
+         <button 
+  className={`${styles.iconButton} ${isSaved ? styles.bookmarked : ""}`}
+  onClick={toggleBookmark}
+>
+  <span className="material-symbols-outlined">bookmark</span>
+</button>
         </header>
 
         {/* Profile Overview */}
