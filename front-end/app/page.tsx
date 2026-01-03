@@ -15,7 +15,7 @@ export default function HomePage() {
           <span className={`material-symbols-outlined ${styles.logoIcon}`}>gavel</span>
           <h2 className={styles.logoText}>Lexpal</h2>
         </div>
-        <button onClick={()=>{router.push("lexpal/Login")}}>
+        <button onClick={()=>{router.push("/lexpal/Login")}}>
         <a href="#" className={styles.primaryButton}>
           Get Started
         </a>
