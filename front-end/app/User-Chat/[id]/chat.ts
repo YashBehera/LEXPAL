@@ -47,8 +47,13 @@ export async function fetchChatHistory(
    WS HELPERS
    ───────────────────────────────────────────── */
 
-export function createChatSocket(receiverId: string) {
-  return new WebSocket(
-    `ws://localhost:5001/ws/user-chat?receiver_id=${receiverId}`
-  );
+export function createChatSocket(receiverId: string): WebSocket {
+  // Construct WebSocket URL properly
+  const wsProtocol = server_url.startsWith('https://') ? 'wss://' : 'ws://';
+  const serverHost = server_url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  
+  const wsUrl = `${wsProtocol}${serverHost}/ws/user-chat?receiver_id=${receiverId}`;
+  console.log('🔗 Creating WebSocket:', wsUrl);
+  
+  return new WebSocket(wsUrl);
 }
