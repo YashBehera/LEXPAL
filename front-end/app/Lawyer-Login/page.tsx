@@ -62,7 +62,7 @@ export default function LoginPage() {
       // set cookie (simple, adjust for HttpOnly via server if needed)
       // document.cookie = `token=${data.token}; path=/; max-age=604800; Secure; SameSite=Lax;`;
 
-      router.push("lexpal/Lawyer-Dashboard");
+      router.push("/lexpal/Lawyer-Dashboard");
     } catch (err) {
       console.error(err);
       setError("Server error, try again later.");
@@ -156,7 +156,7 @@ export default function LoginPage() {
         <div className={styles.bottomNote}>
           <p>
             Don't have an account?{" "}
-            <button onClick={()=>{router.push("lexpal/Lawyer-SignUp")}}>
+            <button onClick={()=>{router.push("/lexpal/Lawyer-SignUp")}}>
             <a className={styles.signUpLink} >
               Sign Up
             </a>

@@ -32,7 +32,7 @@ export default function HomePage() {
           </h2>
           {/* <button className={styles.primaryButtonLarge}>Talk to AI Chatbot</button> */}
           
-         <Button1 onClick={()=>{router.push("lexpal/Login")}}/>
+         <Button1 onClick={()=>{router.push("/lexpal/Login")}}/>
 
         </div>
         <div
@@ -123,7 +123,7 @@ export default function HomePage() {
         <p>
           Take the first step towards resolving your legal matters. Our AI is ready to assist you 24/7.
         </p>
-        <button onClick={()=>{router.push("lexpal/Lawyer-Login")}} className={styles.ctaButton}>Get Started Now</button>
+        <button onClick={()=>{router.push("/lexpal/Lawyer-Login")}} className={styles.ctaButton}>Get Started Now</button>
       </section>
 
       {/* Footer */}

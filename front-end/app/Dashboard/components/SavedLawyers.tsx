@@ -103,10 +103,10 @@ export default function SavedLawyers({ lawyers, loading, error, router}: SavedLa
                     <span>{l.review_count}</span>
                   </div>
                 </div>
-                <button className={styles.chatBtn}>
+                <button className={styles.chatBtn} onClick={()=>{router.push(`/lexpal/User-Chat/${l.id}`)}}>
                   <span className="material-symbols-outlined">chat</span> Chat
                 </button>
-                <button className={styles.profileBtn} onClick={()=>{router.push(`lexpal/Lawyer-Profile/${l.id}`)}}>
+                <button className={styles.profileBtn} onClick={()=>{router.push(`/lexpal/Lawyer-Profile/${l.id}`)}}>
                   View Profile{" "}
                   <span className="material-symbols-outlined">arrow_right_alt</span>
                 </button>
