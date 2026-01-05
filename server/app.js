@@ -1,6 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser"
-import dotenv from "dotenv";
+
 import cors from "cors";
 
 import authRouter from "./src/routes/auth.route.js";
@@ -9,7 +9,6 @@ import AIRouter from "./src/routes/AI.route.js";
 import userRouter from "./src/routes/user.route.js";
 import exploreRouter from "./src/routes/explore.route.js";
 
-dotenv.config();
 
 const app = express();
 
