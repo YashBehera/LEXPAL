@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
-    "dotenv": "^17.2.3",
-    "jsonwebtoken": "^9.0.2",
-    "mongodb": "^7.0.0",
+    
+    
+   
     "motion": "^12.23.26",
     "next": "16.0.0",
     "react": "19.2.0",

@@ -52,7 +52,7 @@ export function createChatSocket(receiverId: string): WebSocket {
   // We want ws://139.59.25.145/lexpal-server/ws/user-chat
   
   const wsUrl = server_url
-    .replace(/^http/, 'ws')  // Convert protocol
+    .replace(/^https/, 'wss')  // Convert protocol
     + '/ws/user-chat?receiver_id=' + receiverId;
   
   console.log('🔗 Creating WebSocket:', wsUrl);
