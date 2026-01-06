@@ -1,12 +1,14 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import styles from "./page.module.css"
 
 export default function LexpalLanding() {
   const router = useRouter()
   const observerRef = useRef<IntersectionObserver | null>(null)
+  const accountCreationRef = useRef<HTMLDivElement>(null)
+  const [userType, setUserType] = useState<"lawyer" | "client">("lawyer")
 
   useEffect(() => {
     // Add Google Material Icons if not already present
@@ -36,6 +38,10 @@ export default function LexpalLanding() {
     return () => observerRef.current?.disconnect()
   }, [])
 
+  const handleGetStarted = () => {
+    accountCreationRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+  }
+
   return (
     <div className={styles.container}>
       {/* Header */}
@@ -45,12 +51,56 @@ export default function LexpalLanding() {
           <span className={styles.logoText}>Lexpal</span>
         </div>
         <nav className={styles.nav}>
-          <button className={styles.navButton} onClick={() => router.push("/Lawyer-Login")}>
-            Login as Lawyer
-          </button>
-          <button className={styles.primaryButton} onClick={() => router.push("/Lawyer-SignUp")}>
-            Create Lawyer Account
-          </button>
+          {/* Mobile toggle - shown only on mobile */}
+          <div className={styles.mobileToggleContainer}>
+            <button
+              className={`${styles.mobileToggleButton} ${userType === "lawyer" ? styles.active : ""}`}
+              onClick={() => setUserType("lawyer")}
+            >
+              Lawyer
+            </button>
+            <button
+              className={`${styles.mobileToggleButton} ${userType === "client" ? styles.active : ""}`}
+              onClick={() => setUserType("client")}
+            >
+              Client
+            </button>
+          </div>
+
+          {/* Desktop toggle */}
+          <div className={styles.toggleContainer}>
+            <button
+              className={`${styles.toggleButton} ${userType === "lawyer" ? styles.active : ""}`}
+              onClick={() => setUserType("lawyer")}
+            >
+              Lawyer
+            </button>
+            <button
+              className={`${styles.toggleButton} ${userType === "client" ? styles.active : ""}`}
+              onClick={() => setUserType("client")}
+            >
+              Client
+            </button>
+          </div>
+          {userType === "lawyer" ? (
+            <>
+              <button className={styles.navButton} onClick={() => router.push("/Lawyer-Login")}>
+                Login as Lawyer
+              </button>
+              <button className={styles.primaryButton} onClick={() => router.push("/Lawyer-SignUp")}>
+                Create Lawyer Account
+              </button>
+            </>
+          ) : (
+            <>
+              <button className={styles.navButton} onClick={() => router.push("/Login")}>
+                Client Login
+              </button>
+              <button className={styles.primaryButton} onClick={() => router.push("/SignuUp")}>
+                Create Client Account
+              </button>
+            </>
+          )}
         </nav>
       </header>
 
@@ -66,39 +116,71 @@ export default function LexpalLanding() {
           <p className={styles.heroSubtitle}>
             Manage clients, cases, documents, research, and drafting — all in one intelligent workspace.
           </p>
-          <div className={styles.heroCTA}>
-            <button className={styles.primaryButtonLarge} onClick={() => router.push("/Lawyer-SignUp")}>
-              Create Lawyer Account
-            </button>
-            <button className={styles.secondaryButtonLarge} onClick={() => router.push("/Lawyer-Login")}>
-              Login as Lawyer
-            </button>
-          </div>
-          <div className={styles.clientCTA}>
-            <button className={styles.textButton} onClick={() => router.push("/SignUp")}>
-              Create Client Account
-            </button>
-            <span className={styles.separator}>|</span>
-            <button className={styles.textButton} onClick={() => router.push("/Login")}>
-              Client Login
-            </button>
+          <div className={styles.ctaButtons}>
+            {userType === "lawyer" ? (
+              <>
+                <button className={styles.primaryButtonLarge} onClick={() => router.push("/Lawyer-SignUp")}>
+                  Create Lawyer Account
+                </button>
+                <button className={styles.secondaryButtonLarge} onClick={() => router.push("/Lawyer-Login")}>
+                  Login as Lawyer
+                </button>
+              </>
+            ) : (
+              <>
+                <button className={styles.primaryButtonLarge} onClick={() => router.push("/SignUp")}>
+                  Create Client Account
+                </button>
+                <button className={styles.secondaryButtonLarge} onClick={() => router.push("/Login")}>
+                  Client Login
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>
 
       {/* Trust Strip */}
       <section className={`${styles.trustStrip} ${styles.animateOnScroll}`}>
-        <div className={styles.trustItem}>
-          <span className="material-symbols-outlined">lock</span>
-          <span>Secure & Confidential</span>
-        </div>
-        <div className={styles.trustItem}>
-          <span className="material-symbols-outlined">account_balance</span>
-          <span>Built for Indian Legal System</span>
-        </div>
-        <div className={styles.trustItem}>
-          <span className="material-symbols-outlined">psychology</span>
-          <span>AI-Assisted, Lawyer-Controlled</span>
+        <div className={styles.slideshowContainer}>
+          <div className={styles.slideshow}>
+            <div className={`${styles.trustCard} ${styles.glowBlue}`}>
+              <div className={styles.trustIconGlow}>
+                <span className="material-symbols-outlined">lock</span>
+              </div>
+              <span>Secure & Confidential</span>
+            </div>
+            <div className={`${styles.trustCard} ${styles.glowPurple}`}>
+              <div className={styles.trustIconGlow}>
+                <span className="material-symbols-outlined">account_balance</span>
+              </div>
+              <span>Built for Indian Legal System</span>
+            </div>
+            <div className={`${styles.trustCard} ${styles.glowMagenta}`}>
+              <div className={styles.trustIconGlow}>
+                <span className="material-symbols-outlined">psychology</span>
+              </div>
+              <span>AI-Assisted, Lawyer-Controlled</span>
+            </div>
+            <div className={`${styles.trustCard} ${styles.glowBlue}`}>
+              <div className={styles.trustIconGlow}>
+                <span className="material-symbols-outlined">lock</span>
+              </div>
+              <span>Secure & Confidential</span>
+            </div>
+            <div className={`${styles.trustCard} ${styles.glowPurple}`}>
+              <div className={styles.trustIconGlow}>
+                <span className="material-symbols-outlined">account_balance</span>
+              </div>
+              <span>Built for Indian Legal System</span>
+            </div>
+            <div className={`${styles.trustCard} ${styles.glowMagenta}`}>
+              <div className={styles.trustIconGlow}>
+                <span className="material-symbols-outlined">psychology</span>
+              </div>
+              <span>AI-Assisted, Lawyer-Controlled</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -260,26 +342,31 @@ export default function LexpalLanding() {
       </section>
 
       {/* Final CTA */}
-      <section className={styles.finalCTA}>
+      <section className={styles.finalCTA} ref={accountCreationRef}>
         <div className={styles.ctaBackground}></div>
         <h2 className={styles.ctaTitle}>Stop switching tabs. Start practicing smarter.</h2>
         <div className={styles.ctaButtons}>
-          <button className={styles.primaryButtonLarge} onClick={() => router.push("/Lawyer-SignUp")}>
-            Create Lawyer Account
-          </button>
-          <button className={styles.secondaryButtonLarge} onClick={() => router.push("/Lawyer-Login")}>
-            Login as Lawyer
-          </button>
+          {userType === "lawyer" ? (
+            <>
+              <button className={styles.primaryButtonLarge} onClick={() => router.push("/Lawyer-SignUp")}>
+                Create Lawyer Account
+              </button>
+              <button className={styles.secondaryButtonLarge} onClick={() => router.push("/Lawyer-Login")}>
+                Login as Lawyer
+              </button>
+            </>
+          ) : (
+            <>
+              <button className={styles.primaryButtonLarge} onClick={() => router.push("/SignUp")}>
+                Create Client Account
+              </button>
+              <button className={styles.secondaryButtonLarge} onClick={() => router.push("/Login")}>
+                Client Login
+              </button>
+            </>
+          )}
         </div>
-        <div className={styles.clientCTAFooter}>
-          <button className={styles.textButton} onClick={() => router.push("/SignUp")}>
-            Create Client Account
-          </button>
-          <span className={styles.separator}>|</span>
-          <button className={styles.textButton} onClick={() => router.push("/Login")}>
-            Client Login
-          </button>
-        </div>
+        
       </section>
 
       {/* Footer */}
