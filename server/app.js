@@ -14,8 +14,22 @@ const app = express();
 
 
 
+const allowedOrigins = [
+  "https://lexpal.in",
+  "https://www.lexpal.in"
+];
+
 app.use(cors({
-  origin: "https://lexpal.in",
+  origin: function (origin, callback) {
+    // allow server-to-server, cron, curl, etc.
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
