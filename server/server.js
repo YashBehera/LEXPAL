@@ -1,8 +1,10 @@
+import dotenv from "dotenv";
+dotenv.config(); // Call this FIRST before any other imports
+
 import http from "http";
 import app from "./app.js";
 import  initAIWebSocketServer from "./src/ws/initiator.js";
 import connectDB from "./src/infra/mongo.db.js"
-import dotenv from "dotenv";
 
 dotenv.config();
 
