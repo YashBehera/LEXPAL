@@ -6,6 +6,7 @@ import FeaturedLawyers from "./components/FeaturedLawyers";
 import LexpalAISection from "./components/LexpalAISection";
 import SavedLawyers from "./components/SavedLawyers";
 import ChatsSection from "./components/ChatsSection";
+import QuickActions from "./components/QuickActions";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
@@ -88,37 +89,65 @@ export default function DashboardPage() {
     return () => ac.abort();
   }, [server_url]);
 
+  // Date formatter
+  const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
     <div className={styles.dashboardRoot}>
       <Navbar firstName={firstName} />
-      <main style={{ paddingTop: "24px", paddingBottom: "64px" }}>
-        <section id="featured-lawyers">
-          <FeaturedLawyers router={router} />
+
+      <main>
+        {/* Intro / Header */}
+        <section className={styles.introSection}>
+          <div className={styles.date}>{today}</div>
+          <h1 className={styles.greeting}>
+            Good Morning{firstName ? `, ${firstName}` : ""}
+          </h1>
         </section>
 
-        <section id="lexpal-ai">
-          {/* pass recent conversations as prop */}
-          <LexpalAISection
-            conversations={recentConvos}
-            loading={recentLoading}
-            error={recentError}
-            router={router}
-          />
-        </section>
+        {/* Bento Grid Layout */}
+        <div className={styles.bentoGrid}>
 
-        <section id="saved-lawyers">
-          {/* pass saved lawyers as prop */}
-          <SavedLawyers
-            lawyers={savedLawyers}
-            loading={savedLoading}
-            error={savedError}
-            router={router}
-          />
-        </section>
+          {/* Tile 1: AI Hero (Span 8) */}
+          <div className={`${styles.span8} ${styles.tile}`}>
+            <LexpalAISection
+              conversations={recentConvos}
+              loading={recentLoading}
+              error={recentError}
+              router={router}
+            />
+          </div>
 
-        <section id="chats">
-          <ChatsSection router={router} />
-        </section>
+          {/* Tile 2: Quick Actions (Span 4) */}
+          <div className={`${styles.span4} ${styles.tile}`}>
+            <QuickActions />
+          </div>
+
+          {/* Tile 3: Saved Lawyers (Span 6) */}
+          <div className={`${styles.span6} ${styles.tile}`}>
+            <SavedLawyers
+              lawyers={savedLawyers}
+              loading={savedLoading}
+              error={savedError}
+              router={router}
+            />
+          </div>
+
+          {/* Tile 4: Recent Chats (Span 6) */}
+          <div className={`${styles.span6} ${styles.tile}`}>
+            <ChatsSection router={router} />
+          </div>
+
+          {/* Tile 5: Featured Lawyers (Span 12) */}
+          <div className={`${styles.span12} ${styles.tile}`}>
+            <FeaturedLawyers router={router} />
+          </div>
+
+        </div>
       </main>
     </div>
   );

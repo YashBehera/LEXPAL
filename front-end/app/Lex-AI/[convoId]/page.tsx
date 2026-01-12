@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import HistoryDrawer from "../HistoryDrawer";
 import styles from "./page.module.css";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { TextShimmer } from "@/components/motion-primitives/text-shimmer";
 
 type ChatMessage = {
@@ -15,6 +15,7 @@ type ChatMessage = {
 const MainChatPage = () => {
   const server_url = process.env.NEXT_PUBLIC_DEV_SERVER_URL;
 
+  const router = useRouter();
   const params = useParams();
 
   const convoIdFromParams =
@@ -25,7 +26,9 @@ const MainChatPage = () => {
       : null;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentConvoId, setCurrentConvoId] = useState<string | null>(null);
+  // Initialize directly to avoid double-render and sync mismatch
+  const [currentConvoId, setCurrentConvoId] = useState<string | null>(convoIdFromParams);
+
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
 
@@ -62,7 +65,7 @@ const MainChatPage = () => {
     let reconnectTimeout: NodeJS.Timeout;
 
     const loadInitialHistory = async () => {
-      if (!currentConvoId||currentConvoId=="new") return;
+      if (!currentConvoId || currentConvoId == "new") return;
 
       setIsFetching(true);
 
@@ -100,16 +103,16 @@ const MainChatPage = () => {
 
       // Remove protocol (http:// or https://) from server_url
       const serverHost = server_url?.replace(/^https?:\/\//, '') || 'localhost:5001';
-      
+
       // Determine protocol (ws:// or wss://) based on server_url
       const wsProtocol = server_url?.startsWith('https://') ? 'wss://' : 'ws://';
-      
+
       const wsUrl = currentConvoId === null
         ? `${wsProtocol}${serverHost}/ws/ai-chat`
         : `${wsProtocol}${serverHost}/ws/ai-chat?convo_id=${currentConvoId}`;
 
       console.log('Connecting to WebSocket:', wsUrl);
-      
+
       const socket = new WebSocket(wsUrl);
       socketRef.current = socket;
 
@@ -150,9 +153,9 @@ const MainChatPage = () => {
       socket.onclose = (event) => {
         console.log('WebSocket closed:', event.code, event.reason);
         if (!isMounted) return;
-        
+
         setSocketReady(false);
-        
+
         // Don't attempt reconnect if component is unmounting or we intentionally closed it
         if (isMounted && event.code !== 1000) {
           // Attempt reconnect after 3 seconds
@@ -170,17 +173,17 @@ const MainChatPage = () => {
     if (currentConvoId) {
       loadInitialHistory();
     }
-    
+
     connectWebSocket();
 
     return () => {
       isMounted = false;
-      
+
       // Clear any pending reconnect
       if (reconnectTimeout) {
         clearTimeout(reconnectTimeout);
       }
-      
+
       // Clean up WebSocket
       if (socketRef.current) {
         socketRef.current.close(1000, "Component unmounting");
@@ -282,15 +285,17 @@ const MainChatPage = () => {
             <div className={styles.headerLeft}>
               <button
                 className={styles.iconButton}
-                onClick={() => window.history.back()}
+                onClick={() => router.back()}
+                suppressHydrationWarning
               >
                 <span className="material-symbols-outlined">
-                  arrow_back
+                  chevron_left
                 </span>
               </button>
               <button
                 className={styles.iconButton}
                 onClick={() => setDrawerOpen(true)}
+                suppressHydrationWarning
               >
                 <span className="material-symbols-outlined">
                   history
@@ -311,47 +316,49 @@ const MainChatPage = () => {
             ref={chatAreaRef}
             onScroll={handleScroll}
           >
-            {connectionError && (
-              <div className={styles.errorMessage}>
-                {connectionError}
-              </div>
-            )}
+            <div className={styles.messageWrapper}>
+              {connectionError && (
+                <div className={styles.errorMessage}>
+                  {connectionError}
+                </div>
+              )}
 
-            {hasMore && isFetching && (
-              <div className={styles.loading}>Loading older messages…</div>
-            )}
+              {hasMore && isFetching && (
+                <div className={styles.loading}>Loading older messages…</div>
+              )}
 
-            {messages.length === 0 && !isFetching && (
-              <div className={styles.aiMessage}>
-                Hello! I am Lexpal AI. How can I assist you today?
-              </div>
-            )}
+              {messages.length === 0 && !isFetching && (
+                <div className={styles.aiMessage} style={{ alignSelf: 'center', textAlign: 'center', background: 'transparent', color: 'var(--text-secondary)', boxShadow: 'none' }}>
+                  Hello! I am Lexpal AI. How can I assist you today?
+                </div>
+              )}
 
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={
-                  msg.sender === "User"
-                    ? styles.userMessage
-                    : styles.aiMessage
-                }
-              >
-                {msg.content}
-              </div>
-            ))}
-
-            {isProcessing && (
-              <div className={styles.aiMessage}>
-                <TextShimmer
-                  className="font-mono text-sm opacity-70"
-                  duration={1}
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={
+                    msg.sender === "User"
+                      ? styles.userMessage
+                      : styles.aiMessage
+                  }
                 >
-                  Thinking…
-                </TextShimmer>
-              </div>
-            )}
+                  {msg.content}
+                </div>
+              ))}
 
-            <div ref={bottomRef} />
+              {isProcessing && (
+                <div className={styles.aiMessage}>
+                  <TextShimmer
+                    className="text-sm opacity-70"
+                    duration={1}
+                  >
+                    Thinking…
+                  </TextShimmer>
+                </div>
+              )}
+
+              <div ref={bottomRef} />
+            </div>
           </div>
         </section>
       </main>
@@ -362,13 +369,13 @@ const MainChatPage = () => {
             ⚠️ Connection issues. Messages may not send.
           </div>
         )}
-        
+
         <div className={styles.inputWrapper}>
           <input
             type="text"
             placeholder={
-              !socketReady 
-                ? "Connecting..." 
+              !socketReady
+                ? "Connecting..."
                 : "Type your prompt..."
             }
             className={styles.input}
@@ -380,12 +387,14 @@ const MainChatPage = () => {
               }
             }}
             disabled={!socketReady || isProcessing}
+            suppressHydrationWarning
           />
 
           <button
             className={styles.sendButton}
             onClick={sendMessage}
             disabled={!socketReady || isProcessing || !input.trim()}
+            suppressHydrationWarning
           >
             <span className="material-symbols-outlined ">
               arrow_upward

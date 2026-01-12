@@ -8,26 +8,24 @@ export default function EmptyChatState() {
         <div className={styles.divider} />
       </div>
 
-      {/* Card */}
+      {/* Content */}
       <div className={styles.cardWrapper}>
         <div className={styles.card}>
-          <span
-            className={`material-symbols-outlined ${styles.icon}`}
-            style={{
-              fontVariationSettings:
-                "'FILL' 1, 'wght' 200, 'GRAD' 0, 'opsz' 48",
-            }}
-          >
-            question_answer
-          </span>
+          <div className={styles.iconContainer}>
+            <span
+              className={`material-symbols-outlined ${styles.icon}`}
+              style={{
+                fontVariationSettings:
+                  "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48",
+              }}
+            >
+              question_answer
+            </span>
+          </div>
 
           <p className={styles.text}>
-            No conversations yet! Start your first chat to see them here.
+            No conversations yet. Your recent chats will appear here.
           </p>
-
-          {/* <button className={styles.button}>
-            Start a New Chat
-          </button> */}
         </div>
       </div>
     </div>

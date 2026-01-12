@@ -1,287 +1,351 @@
+/* Apple Style Lawyer Profile - Contact Poster Aesthetic */
+
 .page {
-  background-color: #f8f9fa;
-  color: #212529;
-  font-family: "Inter", sans-serif;
+  background-color: #F5F5F7;
+  color: #1d1d1f;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  padding-bottom: 120px;
+  /* Space for floating bar */
+}
+
+:global(.dark) .page {
+  background-color: #000000;
+  color: #f5f5f7;
 }
 
 .main {
-  padding-bottom: 80px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 20px;
+  animation: fadeIn 0.8s ease-out;
 }
 
-.header {
+/* -------------------- HEADER -------------------- */
+.headerSpacer {
+  height: 60px;
+}
+
+.stickyHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(245, 245, 247, 0.72);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  height: 60px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  padding: 16px;
+  padding: 0 20px;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
 }
-/* Update your CSS styles */
-.iconButton {
-  height: 40px;
-  width: 40px;
-  border: none;
-  background: none;
+
+:global(.dark) .stickyHeader {
+  background: rgba(0, 0, 0, 0.72);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.backBtn,
+.shareBtn {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  cursor: pointer;
-  color: #040000; /* Default outline color */
-}
-
-.iconButton span {
-  font-variation-settings: "FILL" 0; /* Default: not filled */
-}
-
-.iconButton.bookmarked {
-  color: #000; /* Black when bookmarked */
-}
-
-.iconButton.bookmarked span {
-  font-variation-settings: "FILL" 1; /* Filled when bookmarked */
-}
-
-.iconButton:hover {
-  background-color: #e9ecef;
-}
-
-.title {
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-
-.profileSection {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-}
-
-.profilePic {
-  height: 96px;
-  width: 96px;
-  border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-}
-
-.profileInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.name {
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-
-.experience,
-.location {
-  color: #6c757d;
-  font-size: 0.9rem;
-}
-
-/* Info Card */
-.infoCard {
-  background-color: #ffffff;
-  border: 1px solid #e9ecef;
-  border-radius: 12px;
-  margin: 0 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.contactBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;      /* spacing between contact rows */
-}
-
-.infoRow {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  color: #343a40;
-}
-
-.mapBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.mapButton {
-  width: 200px;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 12px;
-  background-color: rgba(17, 115, 212, 0.1);
-  color: #1173d4;
-  border-radius: 9999px;
-  padding: 4px 12px;
-  /* text-decoration: none; */
-  margin-top: 4px;
-  
-}
-
-.mapButton:hover {
-  background-color: rgba(17, 115, 212, 0.2);
-}
-
-.badgesRow {
-  display: flex;
-  justify-content: space-between;
-}
-
-.badgeBlue,
-.badgeTeal {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border-radius: 9999px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 4px 12px;
-}
-
-.badgeBlue {
-  background-color: #dbeafe;
-  color: #1e40af;
-}
-
-.badgeTeal {
-  background-color: #ccfbf1;
-  color: #0f766e;
-}
-
-.courtsGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  text-align: center;
-  gap: 16px;
-  padding-top: 12px;
-}
-
-.courtCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.courtIcon {
-  height: 40px;
-  width: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
-  background-color: rgba(197, 164, 103, 0.15);
-  color: #c5a467;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #1d1d1f;
+  transition: background 0.2s;
 }
 
-/* Details */
-.detailSection {
-  padding: 16px;
+:global(.dark) .backBtn,
+:global(.dark) .shareBtn {
+  color: #f5f5f7;
 }
 
-.detailSection h3 {
-  font-size: 1.1rem;
+.backBtn:hover,
+.shareBtn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+:global(.dark) .backBtn:hover,
+:global(.dark) .shareBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+
+/* -------------------- HERO (Contact Poster) -------------------- */
+.heroSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 60px 0 40px;
+}
+
+.heroAvatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+  margin-bottom: 24px;
+}
+
+.heroName {
+  font-size: 40px;
   font-weight: 700;
+  letter-spacing: -0.01em;
   margin-bottom: 8px;
+  color: #1d1d1f;
 }
 
-.chipContainer {
+:global(.dark) .heroName {
+  color: #f5f5f7;
+}
+
+.heroMeta {
+  font-size: 17px;
+  color: #86868b;
+  margin-bottom: 24px;
+}
+
+.badges {
+  display: flex;
+  gap: 12px;
+}
+
+.badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.verified {
+  background: #e3f2fd;
+  color: #0071e3;
+}
+
+:global(.dark) .verified {
+  background: rgba(0, 113, 227, 0.2);
+  color: #409cff;
+}
+
+.aor {
+  background: #e0f2f1;
+  color: #00897b;
+}
+
+:global(.dark) .aor {
+  background: rgba(0, 137, 123, 0.2);
+  color: #4db6ac;
+}
+
+/* -------------------- BENTO GRID INFO -------------------- */
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.card {
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01), 0 10px 15px -3px rgba(0, 0, 0, 0.01);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+:global(.dark) .card {
+  background: #1c1c1e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Specific Spans */
+.span4 {
+  grid-column: span 4;
+}
+
+.span6 {
+  grid-column: span 6;
+}
+
+.span8 {
+  grid-column: span 8;
+}
+
+.span12 {
+  grid-column: span 12;
+}
+
+/* Stat Cards */
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+}
+
+.statValue {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1d1d1f;
+}
+
+:global(.dark) .statValue {
+  color: #f5f5f7;
+}
+
+.statLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #86868b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-top: 4px;
+}
+
+/* -------------------- CONTENT SECTIONS -------------------- */
+.sectionTitle {
+  font-size: 19px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1d1d1f;
+}
+
+:global(.dark) .sectionTitle {
+  color: #f5f5f7;
+}
+
+.pillContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.chip {
-  background-color: #e2e8f0;
-  color: #1e293b;
-  border-radius: 9999px;
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.detailSection p {
-  color: #495057;
-  line-height: 1.6;
-}
-
-/* Rating */
-.ratingCard {
-  margin: 16px;
-  border: 1px solid #e9ecef;
+.pill {
+  padding: 8px 16px;
+  background: #f5f5f7;
   border-radius: 12px;
-  background-color: #ffffff;
-  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1d1d1f;
+}
+
+:global(.dark) .pill {
+  background: #2c2c2e;
+  color: #f5f5f7;
+}
+
+.paragraph {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #424245;
+}
+
+:global(.dark) .paragraph {
+  color: #aeaeb2;
+}
+
+/* -------------------- FLOATING BAR -------------------- */
+.floatingBar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 400px;
+  background: rgba(29, 29, 31, 0.85);
+  /* Proper Apple Dark Blur */
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  padding: 12px;
+  border-radius: 40px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  gap: 12px;
+  z-index: 100;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
-.ratingInfo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #c5a467;
+:global(.dark) .floatingBar {
+  background: rgba(44, 44, 46, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.ratingValue {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #212529;
-}
-
-.ratingCount {
-  color: #6c757d;
-}
-
-.viewReviews {
+.actionBtn {
+  flex: 1;
+  height: 48px;
+  border-radius: 24px;
   border: none;
-  background: none;
-  color: #1173d4;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: transform 0.1s;
 }
 
-.viewReviews:hover {
-  text-decoration: underline;
+.actionBtn:active {
+  transform: scale(0.96);
 }
 
-/* Footer */
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #f8f9fa;
-  border-top: 1px solid #dee2e6;
-  padding: 16px;
-}
-
-.bookButton {
-  background-color: #0a2342;
+.primaryBtn {
+  background: #0071e3;
   color: white;
-  font-weight: 700;
-  width: 100%;
-  height: 48px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
 }
 
-.bookButton:hover {
-  background-color: #0d305f;
+.secondaryBtn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f5f5f7;
+  /* Keep text light on the dark bar */
 }
 
-.divider {
-  border: none;
-  border-top: 1px solid #e9ecef;
+/* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 768px) {
+  .bentoGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .heroName {
+    font-size: 32px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .span4,
+  .span6,
+  .span8,
+  .span12 {
+    grid-column: auto;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -48,7 +48,7 @@ const ExplorePage: React.FC = () => {
         const newLawyers = data.lawyers.filter(lawyer => !existingIds.has(lawyer.id));
         return [...prev, ...newLawyers];
       });
-      
+
       setCursor(data.nextCursor);
       setHasMore(data.hasMore);
     } catch (error) {
@@ -87,15 +87,15 @@ const ExplorePage: React.FC = () => {
   }, [fetchLawyers, hasMore, loading]);
 
   return (
-    <div className="bg-background-light dark:bg-background-dark min-h-screen w-full relative overflow-x-hidden">
-      <div className="max-w-md mx-auto">
-        <ExploreHeader onOpenFilters={() => setIsFilterOpen(true)} router={router} />
+    <div className={styles.exploreRoot}>
+      <ExploreHeader onOpenFilters={() => setIsFilterOpen(true)} router={router} />
 
-        {/* Lawyer Cards */}
-        <div className="grid grid-cols-1 gap-4 p-4">
+      <main className={styles.mainContent}>
+        {/* Lawyer Cards Grid */}
+        <div className={styles.lawyerGrid}>
           {lawyers.map((l) => (
-            <LawyerCard 
-              key={l.id} // Make sure to add a unique key
+            <LawyerCard
+              key={l.id}
               first_name={l.first_name}
               id={l.id}
               last_name={l.last_name}
@@ -106,19 +106,19 @@ const ExplorePage: React.FC = () => {
               specialities={l.specialities}
               court_eligibility={l.court_eligibility}
               profile_picture={l.profile_picture}
-              router={router} 
+              router={router}
             />
           ))}
         </div>
 
         {/* Loader trigger */}
         <div ref={loaderRef} className={styles.loader}>
-          {loading && <p className="text-center text-sm text-gray-500">Loading more lawyers...</p>}
+          {loading && <p>Loading more advocates...</p>}
           {!hasMore && lawyers.length > 0 && (
-            <p className="text-center text-sm text-gray-500">No more lawyers to load</p>
+            <p>All advocates loaded</p>
           )}
         </div>
-      </div>
+      </main>
 
       <FilterSidebar open={isFilterOpen} onClose={() => setIsFilterOpen(false)} />
     </div>

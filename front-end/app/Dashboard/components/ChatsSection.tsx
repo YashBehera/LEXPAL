@@ -27,7 +27,7 @@ export default function ChatsSection({ router }: ChatsSectionProps) {
   // Format relative time
   const formatTime = useCallback((dateStr: string) => {
     if (!dateStr) return "";
-    
+
     const date = new Date(dateStr);
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
@@ -40,7 +40,7 @@ export default function ChatsSection({ router }: ChatsSectionProps) {
     if (diffHours < 24) return `${diffHours}h`;
     if (diffDays === 1) return "Yesterday";
     if (diffDays < 7) return `${diffDays}d`;
-    
+
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   }, []);
 
@@ -73,7 +73,7 @@ export default function ChatsSection({ router }: ChatsSectionProps) {
             </div>
             <h2 className={styles.title}>Messages</h2>
           </div>
-          
+
           {!loading && !isEmpty && totalUnread > 0 && (
             <span className={styles.unreadBadge}>
               {totalUnread} new
@@ -87,7 +87,7 @@ export default function ChatsSection({ router }: ChatsSectionProps) {
               <button className={styles.composeBtn} aria-label="New message">
                 <span className="material-symbols-outlined">edit_square</span>
               </button>
-              
+
               <button className={styles.seeAllBtn} onClick={handleSeeAll}>
                 See All
                 <span className="material-symbols-outlined">arrow_forward</span>
@@ -152,9 +152,8 @@ export default function ChatsSection({ router }: ChatsSectionProps) {
             return (
               <button
                 key={chat.userId}
-                className={`${styles.chatItem} ${hasUnread ? styles.chatItemUnread : ""} ${
-                  hoveredChat === chat.userId ? styles.chatItemHovered : ""
-                }`}
+                className={`${styles.chatItem} ${hasUnread ? styles.chatItemUnread : ""} ${hoveredChat === chat.userId ? styles.chatItemHovered : ""
+                  }`}
                 onClick={() => handleChatClick(chat.userId)}
                 onMouseEnter={() => setHoveredChat(chat.userId)}
                 onMouseLeave={() => setHoveredChat(null)}
@@ -162,12 +161,26 @@ export default function ChatsSection({ router }: ChatsSectionProps) {
               >
                 {/* Avatar */}
                 <div className={styles.avatarWrap}>
-                  <img
-                    src={chat.profile_pic}
-                    alt={`${chat.first_name} ${chat.last_name}`}
-                    className={styles.avatar}
-                    loading="lazy"
-                  />
+                  {chat.profile_pic ? (
+                    <img
+                      src={chat.profile_pic}
+                      alt={`${chat.first_name} ${chat.last_name}`}
+                      className={styles.avatar}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className={styles.avatar} style={{
+                      backgroundColor: '#E0E0E0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#555',
+                      fontSize: '14px',
+                      fontWeight: '600'
+                    }}>
+                      {(chat.first_name?.[0] || "")}{(chat.last_name?.[0] || "")}
+                    </div>
+                  )}
                   {isOnline && <span className={styles.onlineDot} />}
                 </div>
 
@@ -181,12 +194,12 @@ export default function ChatsSection({ router }: ChatsSectionProps) {
                       {formatTime(chat.lastMessageAt)}
                     </span>
                   </div>
-                  
+
                   <div className={styles.chatBottom}>
                     <p className={styles.chatMessage}>
                       {chat.lastMessage || "No messages yet"}
                     </p>
-                    
+
                     {hasUnread && (
                       <span className={styles.chatBadge}>
                         {chat.unreadCount > 9 ? "9+" : chat.unreadCount}

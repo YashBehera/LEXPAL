@@ -7,7 +7,11 @@
 
 .section {
   width: 100%;
+  height: 100%;
+  padding: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* -------------------- HEADER -------------------- */
@@ -631,8 +635,41 @@
    RESPONSIVE
    ============================================ */
 
-/* Tablet */
-@media (min-width: 640px) {
+/* Mobile (480px - 639px) */
+@media (min-width: 480px) and (max-width: 639px) {
+  .header {
+    padding: 0 24px;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  .carousel {
+    padding: 8px 24px 24px;
+    gap: 16px;
+  }
+
+  .card {
+    flex: 0 0 300px;
+  }
+
+  .pagination {
+    padding: 0 24px;
+  }
+
+  .ctaSection {
+    padding: 32px 24px 0;
+  }
+
+  .divider {
+    padding: 40px 24px 0;
+  }
+}
+
+/* Tablet (640px - 1023px) */
+@media (min-width: 640px) and (max-width: 1023px) {
   .section {
     padding: 40px 0 56px;
   }
@@ -676,8 +713,8 @@
   }
 }
 
-/* Desktop */
-@media (min-width: 1024px) {
+/* Desktop (1024px - 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
   .section {
     padding: 48px 0 64px;
   }
@@ -746,14 +783,52 @@
   }
 }
 
-/* Large Desktop */
-@media (min-width: 1280px) {
+/* Large Desktop (1280px - 1919px) */
+@media (min-width: 1280px) and (max-width: 1919px) {
   .card {
     flex: 0 0 420px;
   }
 
   .cardName {
     font-size: 26px;
+  }
+}
+
+/* Extra Large Desktop (1920px+) */
+@media (min-width: 1920px) {
+  .header {
+    padding: 0 64px;
+  }
+
+  .carousel {
+    padding: 12px 64px 36px;
+    gap: 28px;
+  }
+
+  .card {
+    flex: 0 0 460px;
+  }
+
+  .cardName {
+    font-size: 28px;
+  }
+
+  .pagination {
+    padding: 0 64px;
+  }
+
+  .ctaSection {
+    padding: 48px 64px 0;
+  }
+
+  .ctaButton {
+    max-width: 420px;
+    height: 64px;
+    font-size: 18px;
+  }
+
+  .divider {
+    padding: 64px 64px 0;
   }
 }
 

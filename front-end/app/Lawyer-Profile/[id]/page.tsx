@@ -9,7 +9,6 @@ type LawyerProfile = {
   first_name: string;
   last_name: string;
   experience: number;
-  // location: string;
   email: string;
   city: string;
   state: string;
@@ -31,19 +30,16 @@ type LawyerProfile = {
 
 const LawyerProfilePage: React.FC = () => {
   const server_url = process.env.NEXT_PUBLIC_DEV_SERVER_URL;
-  
+
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
   const [lawyer, setLawyer] = useState<LawyerProfile | null>(null);
   const [loading, setLoading] = useState(true);
-
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [saving, setSaving] = useState<boolean>(false);
 
-
-
-  //save unsave toggle
+  // Toggle Bookmark
   const toggleBookmark = async () => {
     if (saving) return;
 
@@ -63,27 +59,22 @@ const LawyerProfilePage: React.FC = () => {
         });
       }
     } catch (err) {
-      // rollback on error
-      setIsSaved(prev => !prev);
+      setIsSaved(prev => !prev); // rollback
     } finally {
       setSaving(false);
     }
   };
-
-
-
 
   useEffect(() => {
     if (!id) return;
 
     const fetchLawyer = async () => {
       try {
-        const res = await fetch(`${server_url}/api/explore/fetch/lawyer/${id}` ,{
-          method:"GET",
-          credentials:"include"
+        const res = await fetch(`${server_url}/api/explore/fetch/lawyer/${id}`, {
+          method: "GET",
+          credentials: "include"
         });
         if (!res.ok) throw new Error("Failed to fetch lawyer");
-
         const data: LawyerProfile = await res.json();
         setLawyer(data);
       } catch (err) {
@@ -93,172 +84,161 @@ const LawyerProfilePage: React.FC = () => {
       }
     };
 
-
-     const checkSaved = async () => {
-    const res = await fetch(`${server_url}/api/user/saved-lawyers/fetch/isLawyerSaved/${id}` ,{
-          method:"GET",
-          credentials:"include"
+    const checkSaved = async () => {
+      try {
+        const res = await fetch(`${server_url}/api/user/saved-lawyers/fetch/isLawyerSaved/${id}`, {
+          method: "GET",
+          credentials: "include"
         });
-    const data: { saved: boolean } = await res.json();
-    setIsSaved(data.saved);
-  };
+        const data: { saved: boolean } = await res.json();
+        setIsSaved(data.saved);
+      } catch (e) { console.error(e); }
+    };
 
-  checkSaved();
-
+    checkSaved();
     fetchLawyer();
-  }, [id]);
-
-
-
+  }, [id, server_url]);
 
   if (loading) {
-    return <p className={styles.loading}>Loading profile...</p>;
+    return <div className="flex items-center justify-center min-h-screen"><p>Loading...</p></div>;
   }
 
   if (!lawyer) {
-    return <p className={styles.error}>Lawyer not found</p>;
+    return <div className="flex items-center justify-center min-h-screen"><p>Advocate not found</p></div>;
   }
 
   return (
     <div className={styles.page}>
+
+      {/* 1. Sticky Frosted Header */}
+      <header className={styles.stickyHeader}>
+        <button className={styles.backBtn} onClick={() => router.back()}>
+          <span className="material-symbols-outlined">arrow_back</span>
+        </button>
+
+        {/* We can fade this in on scroll later if needed */}
+        {/* <span className={styles.headerTitle}>{lawyer.first_name}</span> */}
+
+        <button className={styles.shareBtn} onClick={toggleBookmark}>
+          <span className={`material-symbols-outlined ${isSaved ? 'check_circle' : ''}`}>
+            {isSaved ? 'bookmark' : 'bookmark_border'}
+          </span>
+        </button>
+      </header>
+
+      {/* Spacer so content doesn't hide behind header */}
+      <div className={styles.headerSpacer} />
+
       <main className={styles.main}>
 
-        {/* Header */}
-        <header className={styles.header}>
-          <button className={styles.iconButton} onClick={() => router.back()}>
-            <span className="material-symbols-outlined">arrow_back</span>
-          </button>
-
-          <h1 className={styles.title}>Lawyer Profile</h1>
-
-         <button 
-  className={`${styles.iconButton} ${isSaved ? styles.bookmarked : ""}`}
-  onClick={toggleBookmark}
->
-  <span className="material-symbols-outlined">bookmark</span>
-</button>
-        </header>
-
-        {/* Profile Overview */}
-        <section className={styles.profileSection}>
-          <div
-            className={styles.profilePic}
-            style={{ backgroundImage: `url(${lawyer.profile_picture})` }}
-          />
-          <div className={styles.profileInfo}>
-            <p className={styles.name}>
-              {lawyer.first_name} {lawyer.last_name}
-            </p>
-            <p className={styles.experience}>
-              {lawyer.experience} Years Experience
-            </p>
-            <p className={styles.location}>{lawyer.city}, {lawyer.state}</p>
-          </div>
-        </section>
-
-        {/* Contact */}
-        <section className={styles.infoCard}>
-          <div className={styles.contactBlock}>
-            <div className={styles.infoRow}>
-              <span className="material-symbols-outlined">mail</span>
-              <span>{lawyer.email}</span>
-            </div>
-
-            <div className={styles.infoRow}>
-              <span className="material-symbols-outlined">location_on</span>
-              <div className={styles.mapBlock}>
-                <span>{lawyer.office_address}</span>
-                <a href="#" className={styles.mapButton}>
-                  <span className="material-symbols-outlined">map</span>
-                  <span>View on Google Maps</span>
-                </a>
-              </div >
-            </div>
-          </div>
-
-          <hr className={styles.divider} />
-
-          {/* Badges */}
-          <div className={styles.badgesRow}>
-            <div className={styles.badgeBlue}>
-              <span className="material-symbols-outlined">badge</span>
-              <span>Bar ID: {lawyer.bar_license}</span>
-            </div>
-
-            {lawyer.aor_certified && (
-              <div className={styles.badgeTeal}>
-                <span className="material-symbols-outlined">verified</span>
-                <span>AOR Certified</span>
-              </div>
-            )}
-          </div>
-
-          <hr className={styles.divider} />
-
-          {/* Courts */}
-          <div className={styles.courtsGrid}>
-            {lawyer.court_eligibility.district_court && (
-              <div className={styles.courtCard}>
-                <span className="material-symbols-outlined">gavel</span>
-                <p>District Court</p>
-              </div>
-            )}
-
-            {lawyer.court_eligibility.high_court && (
-              <div className={styles.courtCard}>
-                <span className="material-symbols-outlined">balance</span>
-                <p>High Court</p>
-              </div>
-            )}
-
-            {lawyer.court_eligibility.supreme_court && (
-              <div className={styles.courtCard}>
-                <span className="material-symbols-outlined">account_balance</span>
-                <p>Supreme Court</p>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Specializations */}
-        <section className={styles.detailSection}>
-          <h3>Specialization Areas</h3>
-          <div className={styles.chipContainer}>
-            {lawyer.specialities.map(s => (
-              <span key={s} className={styles.chip}>{s}</span>
-            ))}
-          </div>
-        </section>
-
-        {/* Languages */}
-        <section className={styles.detailSection}>
-          <h3>Languages</h3>
-          <div className={styles.chipContainer}>
-            {lawyer.languages.map(l => (
-              <span key={l} className={styles.chip}>{l}</span>
-            ))}
-          </div>
-        </section>
-
-        {/* About */}
-        <section className={styles.detailSection}>
-          <h3>About</h3>
-          <p>{lawyer.description}</p>
-        </section>
-
-        {/* Rating */}
-        <section className={styles.ratingCard}>
-          <span className="material-symbols-outlined">star</span>
-          <p className={styles.ratingValue}>{lawyer.avg_rating}</p>
-          <p className={styles.ratingCount}>
-            ({lawyer.review_count} reviews)
+        {/* 2. Hero Section (Contact Poster) */}
+        <section className={styles.heroSection}>
+          <div className={styles.heroAvatar} style={{ backgroundImage: `url(${lawyer.profile_picture})` }} />
+          <h1 className={styles.heroName}>{lawyer.first_name} {lawyer.last_name}</h1>
+          <p className={styles.heroMeta}>
+            Advocate • {lawyer.city}, {lawyer.state} • {lawyer.experience} Years
           </p>
+
+          <div className={styles.badges}>
+            <span className={`${styles.badge} ${styles.verified}`}>
+              <span className="material-symbols-outlined text-[16px]">verified</span>
+              Verified
+            </span>
+            {lawyer.aor_certified && (
+              <span className={`${styles.badge} ${styles.aor}`}>
+                <span className="material-symbols-outlined text-[16px]">gavel</span>
+                AOR Certified
+              </span>
+            )}
+          </div>
         </section>
+
+
+        {/* 3. Bento Grid Details */}
+        <div className={styles.bentoGrid}>
+
+          {/* Rating Stat */}
+          <div className={`${styles.card} ${styles.span4}`}>
+            <div className={styles.statCard}>
+              <span className={styles.statValue}>
+                {lawyer.avg_rating} <span className="text-yellow-500 text-2xl">★</span>
+              </span>
+              <span className={styles.statLabel}>{lawyer.review_count} Reviews</span>
+            </div>
+          </div>
+
+          {/* Languages */}
+          <div className={`${styles.card} ${styles.span8}`}>
+            <h3 className={styles.sectionTitle}>Languages Spoken</h3>
+            <div className={styles.pillContainer}>
+              {lawyer.languages.map(l => (
+                <span key={l} className={styles.pill}>{l}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Bio */}
+          <div className={`${styles.card} ${styles.span12}`}>
+            <h3 className={styles.sectionTitle}>About</h3>
+            <p className={styles.paragraph}>{lawyer.description}</p>
+          </div>
+
+          {/* Specialities */}
+          <div className={`${styles.card} ${styles.span6}`}>
+            <h3 className={styles.sectionTitle}>Areas of Practice</h3>
+            <div className={styles.pillContainer}>
+              {lawyer.specialities.map(s => (
+                <span key={s} className={styles.pill}>{s}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Courts & Location */}
+          <div className={`${styles.card} ${styles.span6}`}>
+            <h3 className={styles.sectionTitle}>Admissible Courts</h3>
+            <div className="flex flex-col gap-3">
+              {lawyer.court_eligibility.supreme_court &&
+                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                  <span className="material-symbols-outlined">account_balance</span> Supreme Court
+                </div>
+              }
+              {lawyer.court_eligibility.high_court &&
+                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                  <span className="material-symbols-outlined">balance</span> High Court
+                </div>
+              }
+              {lawyer.court_eligibility.district_court &&
+                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                  <span className="material-symbols-outlined">gavel</span> District Court
+                </div>
+              }
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-gray-100 dark:border-white/10">
+              <div className="flex items-start gap-2 text-sm text-gray-500">
+                <span className="material-symbols-outlined text-[18px]">location_on</span>
+                {lawyer.office_address}
+              </div>
+            </div>
+          </div>
+
+        </div>
+
       </main>
 
-      <footer className={styles.footer}>
-        <button className={styles.bookButton} onClick={()=>{router.push(`/User-Chat/${id}`)}}>Chat</button>
-      </footer>
+      {/* 4. Floating Action Bar */}
+      <div className={styles.floatingBar}>
+        <button className={`${styles.actionBtn} ${styles.secondaryBtn}`} onClick={() => alert('Call feature coming soon')}>
+          Call
+        </button>
+        <button
+          className={`${styles.actionBtn} ${styles.primaryBtn}`}
+          onClick={() => { router.push(`/User-Chat/${id}`) }}
+        >
+          Message
+        </button>
+      </div>
+
     </div>
   );
 };

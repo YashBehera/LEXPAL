@@ -1,117 +1,90 @@
-/* Root wrapper */
+/* EmptyChat.module.css */
+
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  
-}
-
-/* Divider */
-.dividerWrapper {
-  position: relative;
-  margin-bottom: 24px;
-}
-
-.divider {
-  position: absolute;
-  inset-inline: 0;
-  height: 1px;
-  width: 80%;
-  margin: 0 auto;
-  background-image: linear-gradient(
-    to right,
-    transparent,
-    #d1d5db,
-    transparent
-  );
-}
-
-/* Dark mode divider */
-:global(.dark) .divider {
-  background-image: linear-gradient(
-    to right,
-    transparent,
-    #4b5563,
-    transparent
-  );
-}
-
-/* Card wrapper */
-.cardWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-/* Card */
-.card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 40px 20px;
+  width: 100%;
+}
 
-  padding: 48px 16px;
+.dividerWrapper {
+  width: 100%;
+  margin-bottom: 32px;
+  opacity: 0.6;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  .divider {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  }
+}
+
+.cardWrapper {
+  width: 100%;
+  max-width: 400px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-
-  background: #ffffff;
-  border-radius: 24px;
-  border: 1px solid #e5e7eb;
-
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-              0 4px 6px -4px rgba(0, 0, 0, 0.1);
-}
-
-/* Dark mode card */
-:global(.dark) .card {
-  background: #1e293b;
-  border-color: #374151;
+  background: transparent;
+  /* Removed card bg for cleaner look */
+  padding: 0;
   box-shadow: none;
-}
-
-/* Icon */
-.icon {
-  font-size: 64px;
-  color: #007aff;
-  margin-bottom: 16px;
-}
-
-/* Text */
-.text {
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 1.6;
-  max-width: 20rem;
-  margin-bottom: 24px;
-
-  color: #111827;
-}
-
-/* Dark mode text */
-:global(.dark) .text {
-  color: #f9fafb;
-}
-
-/* Button */
-.button {
-  background: #0057ff;
-  color: #ffffff;
-
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: 0.025em;
-
-  padding: 12px 24px;
-  border-radius: 12px;
-
   border: none;
-  cursor: pointer;
-
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-              0 4px 6px -4px rgba(0, 0, 0, 0.1);
-
-  transition: background-color 0.2s ease;
 }
 
-.button:hover {
-  background: rgba(0, 87, 255, 0.9);
+.iconContainer {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(0, 113, 227, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .iconContainer {
+    background: rgba(10, 132, 255, 0.15);
+  }
+}
+
+.icon {
+  font-size: 36px;
+  color: #0071e3;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .icon {
+    color: #0a84ff;
+  }
+}
+
+.text {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 16px;
+  color: #86868b;
+  /* Apple Label Secondary */
+  font-weight: 500;
+  margin: 0;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+  .text {
+    color: #98989d;
+  }
 }
