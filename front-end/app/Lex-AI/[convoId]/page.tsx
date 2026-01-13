@@ -5,6 +5,7 @@ import HistoryDrawer from "../HistoryDrawer";
 import styles from "./page.module.css";
 import { useParams, useRouter } from "next/navigation";
 import { TextShimmer } from "@/components/motion-primitives/text-shimmer";
+import ReactMarkdown from 'react-markdown';
 
 type ChatMessage = {
   sender: "AI" | "User";
@@ -342,7 +343,13 @@ const MainChatPage = () => {
                       : styles.aiMessage
                   }
                 >
-                  {msg.content}
+                  {msg.sender === "AI" ? (
+                    <div className={styles.markdownContent}>
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </div>
+                  ) : (
+                    msg.content
+                  )}
                 </div>
               ))}
 

@@ -1,0 +1,295 @@
+/* LegalPageLayout.module.css */
+:root {
+    /* Apple Color System */
+    --color-primary: #0066cc;
+    /* Apple Blue */
+    --color-text: #1d1d1f;
+    /* Apple Near Black */
+    --color-text-secondary: #86868b;
+    /* Apple Gray */
+    --color-bg: #f5f5f7;
+    /* Apple Off-White Background */
+    --color-sidbar-bg: #f5f5f7;
+    --color-border: #d2d2d7;
+
+    --font-sans: "SF Pro Text", "Myriad Set Pro", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    --font-display: "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+
+    --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Apple "Ribbon" Header */
+.header {
+    height: 52px;
+    background: rgba(255, 255, 255, 0.85);
+    /* Slightly more opaque for better contrast */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+}
+
+.headerContainer {
+    max-width: 1200px;
+    /* Wider container for sidebar layout */
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 40px;
+    /* More breathing room */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    opacity: 0.92;
+    transition: opacity 0.2s;
+}
+
+.logo:hover {
+    opacity: 1;
+}
+
+.logoText {
+    font-size: 19px;
+    font-weight: 600;
+    color: #1d1d1f;
+    letter-spacing: -0.01em;
+}
+
+.backLink {
+    font-size: 12px;
+    color: #1d1d1f;
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.backLink:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* Two-Column Layout */
+.main {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 40px 120px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    /* Sidebar + Content */
+    gap: 80px;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    position: sticky;
+    top: 140px;
+    /* Header height + spacing */
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebarTitle {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #86868b;
+    margin-bottom: 12px;
+}
+
+.tocLink {
+    font-size: 14px;
+    color: #86868b;
+    text-decoration: none;
+    padding: 6px 0;
+    transition: color 0.2s;
+    line-height: 1.4;
+}
+
+.tocLink:hover {
+    color: #1d1d1f;
+    background: none;
+    text-decoration: none;
+}
+
+/* Content Area */
+.content {
+    /* No card background, just clean text on page background */
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Content Transition Wrapper */
+.contentWrapper {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contentWrapper.transitioning {
+    opacity: 0;
+    transform: translateY(15px);
+    /* Fade down exit */
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+    font-size: 14px;
+    color: #86868b;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.title {
+    font-family: var(--font-display);
+    font-size: 64px;
+    /* Massive hero title */
+    line-height: 1.0625;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: #1d1d1f;
+    margin-bottom: 24px;
+}
+
+.lastUpdated {
+    display: block;
+    font-size: 17px;
+    color: #424245;
+    margin-bottom: 60px;
+    font-weight: 400;
+}
+
+/* Premium Typography */
+.prose {
+    font-size: 19px;
+    /* Larger, more readable body */
+    line-height: 1.57895;
+    letter-spacing: 0.009em;
+    color: #1d1d1f;
+    font-weight: 400;
+}
+
+.prose section {
+    margin-bottom: 60px;
+    scroll-margin-top: 120px;
+    /* For sticky header anchor offset */
+}
+
+.prose h2 {
+    font-family: var(--font-display);
+    font-size: 32px;
+    line-height: 1.125;
+    font-weight: 600;
+    letter-spacing: 0.004em;
+    color: #1d1d1f;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.prose h3 {
+    font-size: 24px;
+    line-height: 1.16667;
+    font-weight: 600;
+    letter-spacing: 0.009em;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+.prose p {
+    margin-bottom: 1.4em;
+    color: #333336;
+}
+
+.prose ul {
+    margin-bottom: 1.4em;
+    padding-left: 20px;
+}
+
+.prose li {
+    margin-bottom: 12px;
+}
+
+.prose a {
+    color: #0066cc;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.prose a:hover {
+    text-decoration: none;
+}
+
+/* Mobile & Responsive */
+@media (max-width: 1024px) {
+    .main {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 60px 40px;
+    }
+
+    .sidebar {
+        display: none;
+        /* Hide TOC on smaller screens/tablets for simplicity, or make it a dropdown */
+    }
+
+    .title {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding-bottom: 60px;
+    }
+
+    .headerContainer {
+        padding: 0 20px;
+    }
+
+    .main {
+        padding: 40px 20px;
+    }
+
+    .title {
+        font-size: 40px;
+    }
+
+    .prose {
+        font-size: 17px;
+    }
+}

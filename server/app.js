@@ -13,11 +13,10 @@ import exploreRouter from "./src/routes/explore.route.js";
 const app = express();
 
 
-
 // server/app.js
 
 app.use(cors({
-  origin: "https://lexpal.in",
+  origin: "http://localhost:3000",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
