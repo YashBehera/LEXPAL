@@ -1,6 +1,7 @@
 // controllers/ai/getLatestConversations.js
 import mongoose from "mongoose";
 import AIConversation from "../models/AIConversation.model.js";
+import AImessage from "../models/AImessage.model.js";
 
 export const recentConversationLoader = async (req, res) => {
   try {
@@ -58,6 +59,36 @@ export const recentConversationLoader = async (req, res) => {
 
   } catch (err) {
     console.error("Error loading conversations:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deleteConversation = async (req, res) => {
+  try {
+    const convoId = req.params.convoId;
+    const userId = req.client_data.id;
+
+    if (!convoId) {
+      return res.status(400).json({ message: "Conversation ID required" });
+    }
+
+    // Verify ownership and delete
+    const result = await AIConversation.deleteOne({
+      _id: convoId,
+      user_id: userId // Ensure ownership
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "Conversation not found or access denied" });
+    }
+
+    // Delete associated messages
+    await AImessage.deleteMany({ convo_id: convoId });
+
+    return res.json({ message: "Conversation deleted successfully" });
+
+  } catch (err) {
+    console.error("Error deleting conversation:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

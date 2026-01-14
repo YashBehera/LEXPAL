@@ -12,10 +12,12 @@ type props = {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: "featured-lawyers", label: "Featured", icon: "star" },
   { id: "lexpal-ai", label: "AI", icon: "auto_awesome" },
   { id: "saved-lawyers", label: "Saved", icon: "bookmark" },
   { id: "chats", label: "Chats", icon: "chat" },
+  { id: "case-timeline", label: "Timeline", icon: "timeline" },
+  { id: "all-cases", label: "Cases", icon: "folder_open" },
+  { id: "featured-lawyers", label: "Featured", icon: "star" },
 ];
 
 const SCROLL_OFFSET = 120;
@@ -157,7 +159,7 @@ export default function Navbar({ firstName }: props) {
                 <span /><span />
               </div>
             </button>
-            
+
             <div className={styles.greetingWrap}>
               <span className={styles.greetingLabel}>{getGreeting()},</span>
               <span className={styles.greetingName}>{firstName}</span>

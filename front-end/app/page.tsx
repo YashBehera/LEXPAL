@@ -15,6 +15,8 @@ import two from "@/public/assets/2.jpeg";
 import four from "@/public/assets/4.jpeg";
 import six from "@/public/assets/6.jpeg";
 
+import seven from "@/public/assets/7.jpeg";
+
 export default function LexpalLanding() {
     const router = useRouter()
     const observerRef = useRef<IntersectionObserver | null>(null)
@@ -267,25 +269,25 @@ export default function LexpalLanding() {
                 icon: "dashboard",
                 title: "Practice Dashboard",
                 description: "Comprehensive case management with real-time insights and analytics",
-                image: "/images/feature-dashboard.jpg"
+                image: seven
             },
             {
                 icon: "folder_shared",
                 title: "Smart Workspaces",
                 description: "Organized documents, timelines, and research per case automatically",
-                image: "/images/feature-workspace.jpg"
+                image: two
             },
             {
                 icon: "search",
                 title: "AI Legal Research",
                 description: "Natural language search across millions of Indian judgments",
-                image: "/images/feature-research.jpg"
+                image: three
             },
             {
                 icon: "edit_document",
                 title: "Smart Drafting",
                 description: "AI-powered document generation with court-specific templates",
-                image: "/images/feature-drafting.jpg"
+                image: four
             }
         ],
         benefits: [
@@ -337,25 +339,25 @@ export default function LexpalLanding() {
                 icon: "person_search",
                 title: "Find Your Lawyer",
                 description: "Search verified lawyers by expertise, location, ratings and reviews",
-                image: "/images/feature-find-lawyer.jpg"
+                image: seven // Reusing images for demo
             },
             {
                 icon: "calendar_month",
                 title: "Easy Scheduling",
                 description: "Book consultations with real-time availability, video or in-person",
-                image: "/images/feature-scheduling.jpg"
+                image: two
             },
             {
                 icon: "cloud_upload",
                 title: "Secure Documents",
                 description: "Upload and share files with bank-grade encryption security",
-                image: "/images/feature-documents.jpg"
+                image: three
             },
             {
                 icon: "monitoring",
                 title: "Live Tracking",
                 description: "Real-time updates on your case status, hearings, and documents",
-                image: "/images/feature-tracking.jpg"
+                image: four
             }
         ],
         benefits: [
@@ -1080,11 +1082,14 @@ export default function LexpalLanding() {
                                         </button>
                                     </div>
                                     <div className={styles.featureImageWrap}>
-                                        <div className={styles.featureImagePlaceholder}>
-                                            <span className="material-symbols-outlined">{feature.icon}</span>
-                                            {/* Replace with actual image */}
-                                            {/* <Image src={feature.image} alt={feature.title} fill style={{ objectFit: 'cover' }} /> */}
-                                        </div>
+                                        {/* Image Component */}
+                                        <Image
+                                            src={feature.image}
+                                            alt={feature.title}
+                                            fill
+                                            style={{ objectFit: 'cover' }}
+                                            className={styles.featureImage}
+                                        />
                                     </div>
                                 </div>
                             ))}

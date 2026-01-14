@@ -6,6 +6,8 @@ import FeaturedLawyers from "./components/FeaturedLawyers";
 import LexpalAISection from "./components/LexpalAISection";
 import SavedLawyers from "./components/SavedLawyers";
 import ChatsSection from "./components/ChatsSection";
+import CaseTimeline from "./components/CaseTimeline";
+import CaseStatusOverview from "./components/CaseStatusOverview";
 import QuickActions from "./components/QuickActions";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
@@ -113,7 +115,7 @@ export default function DashboardPage() {
         <div className={styles.bentoGrid}>
 
           {/* Tile 1: AI Hero (Span 8) */}
-          <div className={`${styles.span8} ${styles.tile}`}>
+          <div id="lexpal-ai" className={`${styles.span8} ${styles.tile}`}>
             <LexpalAISection
               conversations={recentConvos}
               loading={recentLoading}
@@ -128,7 +130,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Tile 3: Saved Lawyers (Span 6) */}
-          <div className={`${styles.span6} ${styles.tile}`}>
+          <div id="saved-lawyers" className={`${styles.span6} ${styles.tile}`}>
             <SavedLawyers
               lawyers={savedLawyers}
               loading={savedLoading}
@@ -138,12 +140,22 @@ export default function DashboardPage() {
           </div>
 
           {/* Tile 4: Recent Chats (Span 6) */}
-          <div className={`${styles.span6} ${styles.tile}`}>
+          <div id="chats" className={`${styles.span6} ${styles.tile}`}>
             <ChatsSection router={router} />
           </div>
 
+          {/* Tile 6: Case Timeline (Span 6) - NEW */}
+          <div id="case-timeline" className={`${styles.span6} ${styles.tile}`}>
+            <CaseTimeline />
+          </div>
+
+          {/* Tile 7: Case Status Overview (Span 6) - NEW */}
+          <div id="all-cases" className={`${styles.span6} ${styles.tile}`}>
+            <CaseStatusOverview />
+          </div>
+
           {/* Tile 5: Featured Lawyers (Span 12) */}
-          <div className={`${styles.span12} ${styles.tile}`}>
+          <div id="featured-lawyers" className={`${styles.span12} ${styles.tile}`}>
             <FeaturedLawyers router={router} />
           </div>
 

@@ -69,7 +69,8 @@
 
 .root {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  /* Changed to row for Sidebar */
   height: 100dvh;
   background-color: var(--bg-primary);
   color: var(--text-primary);
@@ -99,66 +100,88 @@
    ───────────────────────────────────────────── */
 
 .header {
-  height: var(--header-height);
-  padding: 0 20px;
+  /* Floating Header Effect for "Island" feel or just super clean bar */
+  height: 64px;
+  /* Slightly taller for elegance */
+  padding: 0 24px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 50;
 
-  /* Frosted Glass */
-  background: var(--bg-glass);
-  backdrop-filter: saturate(180%) blur(25px);
-  -webkit-backdrop-filter: saturate(180%) blur(25px);
-  border-bottom: 1px solid var(--border-light);
+  /* Sophisticated Glass */
+  background: rgba(255, 255, 255, 0.65);
+  /* More transparent */
+  backdrop-filter: saturate(180%) blur(40px);
+  /* Deeper blur */
+  -webkit-backdrop-filter: saturate(180%) blur(40px);
+
+  /* Subtle border separator instead of heavy line */
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    background: rgba(28, 28, 30, 0.65);
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.08);
+    /* Dark subtle divider */
+  }
 }
 
 .headerLeft {
-  position: absolute;
-  left: 20px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  min-width: 80px;
+  /* Balance for center title */
 }
 
+/* Custom Header specific button */
 .iconButton {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.04);
   border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  border-radius: 12px;
+  /* Squrcle */
+  width: 38px;
+  height: 38px;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-blue);
+  color: var(--text-primary);
   cursor: pointer;
 
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .iconButton:hover {
-  background: rgba(0, 113, 227, 0.08);
-  /* Subtle touch target highlight */
+  background: rgba(0, 0, 0, 0.08);
+  transform: scale(0.98);
 }
 
-.iconButton:active {
-  transform: scale(0.92);
-}
 
-.iconButton span {
-  font-size: 20px;
-  font-variation-settings: 'wght' 500;
+/* Dark Mode Button overrides */
+@media (prefers-color-scheme: dark) {
+  .iconButton {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  .iconButton:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
 }
 
 .title {
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
+  opacity: 0.9;
 }
 
 /* ─────────────────────────────────────────────
@@ -254,6 +277,33 @@
 
   box-shadow: 0 4px 12px rgba(0, 113, 227, 0.15);
   font-weight: 400;
+
+  /* Flex col for context display */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.attachedContextDisplay {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 8px;
+}
+
+.contextChipStatic {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  /* Subtle pill on blue bg */
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
 }
 
 .errorMessage {
@@ -279,27 +329,27 @@
    FLOATING INPUT "ISLAND"
    ───────────────────────────────────────────── */
 
+/* Removed inputArea styles as they are now in ChatInput component or we can repurpose to position it */
 .inputArea {
-  position: fixed;
-  bottom: 0px;
+  position: absolute;
+  bottom: 0;
   left: 0;
   right: 0;
-  padding: 0 24px 32px;
-  /* Bottom padding gives "floating" look */
-
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-  /* Allow clicks through empty space */
+  padding: 0 20px 24px;
   z-index: 60;
+  pointer-events: none;
+  /* gradient mask */
+  background: linear-gradient(to top, var(--bg-primary) 20%, rgba(245, 245, 247, 0) 100%);
+}
 
-  /* Gradual mask to hide text scrolling behind */
-  background: linear-gradient(to top, var(--bg-primary) 40%, rgba(245, 245, 247, 0) 100%);
+/* Make sure children react to pointer events */
+.inputArea>* {
+  pointer-events: auto;
 }
 
 @media (prefers-color-scheme: dark) {
   .inputArea {
-    background: linear-gradient(to top, var(--bg-primary) 40%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(to top, var(--bg-primary) 20%, rgba(0, 0, 0, 0) 100%);
   }
 }
 
